@@ -1,0 +1,239 @@
+一、实验环境
+操作系统：CentOS7.x  Minimal
+IP：192.168.1.106
+二、软件安装
+# yum  -y install python-setuptools
+#  easy_install pip
+# yum  -y install python-devel libevent-devel
+# pip install jupyter
+三、启动 Jupyter notebook
+#  jupyter notebook --ip=0.0.0.0 --no-browser --allow-root
+四、设置开机自启
+# vim /usr/bin/start-jupyter-notebook.sh
+###############################
+#!/bin/bash
+jupyter  notebook  --ip=0.0.0.0 --no-browser --allow-root > /tmp/jupyter-notebook.log  2>&1
+###############################
+# chmod +x /usr/bin/start-jupyter-notebook.sh
+# vim /etc/systemd/system/jupyter-notebook.service
+################################
+[Unit]
+Description=Jupyter notebook startup script
+[Service]
+ExecStart=/usr/bin/nohup /usr/bin//start-jupyter-notebook.sh  &
+[Install]
+WantedBy=multi-user.target
+#################################
+# systemctl daemon-reload
+# systemctl start jupyter-notebook.service
+# systemctl enable jupyter-notebook.service
+# systemctl status jupyter-notebook.service
+# cat  /tmp/jupyter-notebook.log
+五、访问测试
+http://192.168.1.106:8888
+
+python绘制折线图
+1、假设一天当中每隔两个小时(range(2,26,2))的气温分别是[15,13,14.5,17,20,25,26,26,27,22,18,15]
+2、导入pyplot模块：from matplotplot import pyplot as plt
+3、准备数据：
+x轴
+x = range(2,26,2)
+y轴
+y = [15,13,14.5,17,20,25,26,26,27,22,18,15]
+传入x和y，通过plot绘制出折线图：
+plt.plot(x,y)
+5、执行程序展示图形：
+plt.show()
+二、图片修改
+1、图片展示较为粗糙，我们还想有以下展示功能：
+a.设置图片大小
+b.保存到本地
+c.图片描述信息
+d.调整x轴y轴刻度的间距
+e.线条的样式，如颜色，透明度等
+f.标记出特殊点，如最高点或最低点
+g.给图片添加水印
+2、设置图片大小
+宽20，高8，每英寸上点的个数即像素是80
+plt.figuer(figsize(20,8),dpi=80)
+3、保存图片
+保存到当前文件下，图片名为t1.png
+plt.savefig("./t1.png")
+4、绘制x轴的刻度(步长为2)
+plt.xticks(x)
+5、调整x轴的步长
+让x轴密集一些(步长为1)：
+plt.xticks(range(2,25))
+步长为0.5：
+_xtick_labels = [i/2 for i in range(4,49)]
+plt.xticks(_xtick_labels)
+x轴刻度又太密集了，取步长为3：
+plt.xticks(_xtick_labels[::3]) #实际步长是1.5
+6、调整y轴的刻度
+#因为y轴是不规律的数字，plt.yticks()里不能直接传y，遍历传y轴的最大和最小刻度
+plt.yticks(range(min(y),max(y)+1)
+7、设置显示中文
+
+
+
+
+
+列表
+序列是Python中最基本的数据结构。序列中的每个元素都分配一个数字 - 它的位置，或索引，
+第一个索引是0，第二个索引是1，依此类推。
+Python有6个序列的内置类型，但最常见的是列表和元组。
+序列都可以进行的操作包括索引，切片，加，乘，检查成员。
+此外，Python已经内置确定序列的长度以及确定最大和最小的元素的方法。
+列表是最常用的Python数据类型，它可以作为一个方括号内的逗号分隔值出现。
+列表的数据项不需要具有相同的类型
+
+
+字典
+字典是另一种可变容器模型，且可存储任意类型对象。
+字典的每个键值(key=>value)对用冒号(:)分割，每个对之间用逗号(,)分割，
+整个字典包括在花括号({})中 ,格式如下所示：
+d = {key1 : value1, key2 : value2 }
+
+
+open函数文件操作：
+操作流程：
+1、打开文件，得到一个文件句柄（对象），赋给一个对象。
+2、通过文件句柄对文件进行操作。
+3、关闭文件。
+r:以读方式打开 
+w:以写方式打开 
+a:以追加模式打开 
+注意：
+1、使用'W'，文件若存在，首先要清空，然后（重新）创建，
+2、使用'a'模式 ，把所有要写入文件的数据都追加到文件的末尾，即使你使用了seek（）
+指向文件的其他地方，如果文件不存在，将自动被创建。
+
+
+函数
+定义一个函数
+你可以定义一个由自己想要功能的函数，以下是简单的规则：
+函数代码块以 def 关键词开头，后接函数标识符名称和圆括号()。
+任何传入参数和自变量必须放在圆括号中间。圆括号之间可以用于定义参数。
+函数的第一行语句可以选择性地使用文档字符串—用于存放函数说明。
+函数内容以冒号起始，并且缩进。
+return [表达式] 结束函数，选择性地返回一个值给调用方。不带表达式的return相当于返回 None。
+语法
+
+def functionname( parameters ):
+ "函数_文档字符串" 
+function_suite
+return [expression]
+
+函数调用
+定义一个函数只给了函数一个名称，指定了函数里包含的参数，和代码块结构。
+这个函数的基本结构完成以后，你可以通过另一个函数调用执行，也可以直接从Python提示符执行。
+
+
+多线程
+同时进行几个任务
+示例：
+import threading
+class A(threading.Thread):
+	def __init__(self):
+		threading.Thread.__init__(self)
+	def run(self):
+		for i in range(0,10):
+			print("我是线程A")
+class A(threading.Thread):
+	def __init__(self):
+		threading.Thread.__init__(self)
+	def run(self):
+		for i in range(0,10):
+			print("我是线程A")
+t1 = A()
+t1.start()
+t2 = B()
+t2.strat
+
+
+PEP8 Python 百度编码规范 
+一 代码编排
+1 缩进。4个空格的缩进（编辑器都可以完成此功能），不使用Tap，更不能混合使用Tap和空格。
+2 每行最大长度79，换行可以使用反斜杠，最好使用圆括号。换行点要在操作符的后边敲回车。
+3 类和top-level函数定义之间空两行；类中的方法定义之间空一行；函数内逻辑无关段落之间空一行；其他地方尽量不要再空行。
+二 文档编排
+1 模块内容的顺序：模块说明和docstring—import—globals&constants—其他定义。其中import部分，又按标准、三方和自己编写顺序依次排放，之间空一行。
+2 不要在一句import中多个库，比如import os, sys不推荐。
+3 如果采用from XX import XX引用库，可以省略‘module.’，都是可能出现命名冲突，这时就要采用import XX。
+三 空格的使用
+总体原则，避免不必要的空格。
+1 各种右括号前不要加空格。
+2 逗号、冒号、分号前不要加空格。
+3 函数的左括号前不要加空格。如Func(1)。
+4 序列的左括号前不要加空格。如list[2]。
+5 操作符左右各加一个空格，不要为了对齐增加空格。
+6 函数默认参数使用的赋值符左右省略空格。
+7 不要将多句语句写在同一行，尽管使用‘；’允许。
+8 if/for/while语句中，即使执行语句只有一句，也必须另起一行。
+四 注释
+总体原则，错误的注释不如没有注释。所以当一段代码发生变化时，第一件事就是要修改注释！
+注释必须使用英文，最好是完整的句子，首字母大写，句后要有结束符，结束符后跟两个空格，开始下一句。如果是短语，可以省略结束符。
+1 块注释，在一段代码前增加的注释。在‘#’后加一空格。段落之间以只有‘#’的行间隔。比如：
+# Description : Module config.
+# Input : None
+# Output : None
+2 行注释，在一句代码后加注释。比如：x = x + 1 # Increment x
+但是这种方式尽量少使用。
+3 避免无谓的注释。
+五 文档描述
+1 为所有的共有模块、函数、类、方法写docstrings；非共有的没有必要，但是可以写注释（在def的下一行）。
+2 如果docstring要换行，参考如下例子,详见PEP 257
+"""Return a foobang
+Optional plotz says to frobnicate the bizbaz first.
+"""
+六 命名规范
+总体原则，新编代码必须按下面命名风格进行，现有库的编码尽量保持风格。
+1 尽量单独使用小写字母‘l’，大写字母‘O’等容易混淆的字母。
+2 模块命名尽量短小，使用全部小写的方式，可以使用下划线。
+3 包命名尽量短小，使用全部小写的方式，不可以使用下划线。
+4 类的命名使用CapWords的方式，模块内部使用的类采用_CapWords的方式。
+5 异常命名使用CapWords+Error后缀的方式。
+6 全局变量尽量只在模块内有效，类似C语言中的static。实现方法有两种，一是__all__机制;二是前缀一个下划线。
+7 函数命名使用全部小写的方式，可以使用下划线。
+8 常量命名使用全部大写的方式，可以使用下划线。
+9 类的属性（方法和变量）命名使用全部小写的方式，可以使用下划线。
+9 类的属性有3种作用域public、non-public和subclass API，可以理解成C++中的public、private、protected，non-public属性前，前缀一条下划线。
+11 类的属性若与关键字名字冲突，后缀一下划线，尽量不要使用缩略等其他方式。
+12 为避免与子类属性命名冲突，在类的一些属性前，前缀两条下划线。比如：类Foo中声明__a,访问时，只能通过Foo._Foo__a，避免歧义。如果子类也叫Foo，那就无能为力了。
+13 类的方法第一个参数必须是self，而静态方法第一个参数必须是cls。
+七 编码建议
+1 编码中考虑到其他python实现的效率等问题，比如运算符‘+’在CPython（Python）中效率很高，都是Jython中却非常低，所以应该采用.join()的方式。
+2 尽可能使用‘is’‘is not’取代‘==’，比如if x is not None 要优于if x。
+3 使用基于类的异常，每个模块或包都有自己的异常类，此异常类继承自Exception。
+4 异常中不要使用裸露的except，except后跟具体的exceptions。
+5 异常中try的代码尽可能少。比如：
+try:
+value = collection[key]
+except KeyError:
+return key_not_found(key)
+else:
+return handle_value(value)
+要优于
+try:
+# Too broad!
+return handle_value(collection[key])
+except KeyError:
+# Will also catch KeyError raised by handle_value()
+return key_not_found(key)
+6 使用startswith() and endswith()代替切片进行序列前缀或后缀的检查。比如
+Yes: if foo.startswith(‘bar’):优于
+No: if foo[:3] == ‘bar’:
+7 使用isinstance()比较对象的类型。比如
+Yes: if isinstance(obj, int): 优于
+No: if type(obj) is type(1):
+8 判断序列空或不空，有如下规则
+Yes: if not seq:
+if seq:
+优于
+No: if len(seq)
+if not len(seq)
+9 字符串不要以空格收尾。
+10 二进制数据判断使用 if boolvalue的方式。
+
+
+

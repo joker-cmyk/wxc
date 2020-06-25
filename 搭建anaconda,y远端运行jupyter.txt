@@ -1,0 +1,47 @@
+1:下载
+wget https://mirrors.tuna.tsinghua.edu.cn/anaconda/archive/Anaconda3-2020.02-Linux-x86_64.sh
+2：下载解压
+yum install -y bzip2
+3：安装
+bash Anaconda3-2020.02-Linux-x86_64.sh
+4：打开配置文件
+sudo vim /etc/profile打开配置文件
+5：配置环境变量
+     进入编辑状态，在文件末尾输入
+export PATH=/root/anaconda3/bin:$PATH
+输入:wq保存退出
+6：更新配置文件
+source /etc/profile 更新配置
+
+7：安装远端，可有可无
+#conda install jupyterlab
+
+8：生成远端登录密码，记得保存shal....
+ipython
+from notebook.auth import passwd
+passwd()
+(输入密码:密码不显示，正常输入回车即可)
+保存一下 shal。。。
+9：生成配置文件
+jupyter lab --generate-config
+10：进入jupyter配置文件
+vim /root/.jupyter/jupyter_notebook_config.py
+
+11：复制以下内容粘贴到配置文件
+
+c.NotebookApp.ip = '私有云ip'
+# 这里的密码就是上边我们生成的那一串
+c.NotebookApp.password = u'sha1:301e56ab3316:f7d4b5b1e1ebe239140746c661caf12acbb0f7ba'
+c.NotebookApp.open_browser = False
+c.NotebookApp.port = 8888
+c.NotebookApp.allow_remote_access = True
+
+
+12：运行
+jupyter lab -allow-root
+13：上面不成功，运行这个
+jupyter notebook  --no-browser --allow-root
+14：网址栏粘贴下面内容：
+http://公ip:/端口号（默认8888）/
+例：http://121.41.121.24:9527
+    
